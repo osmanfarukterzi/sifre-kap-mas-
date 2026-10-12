@@ -25,6 +25,7 @@ body{
   font-family:var(--body); color:var(--text); font-size:16px; line-height:1.4;
   background:
     linear-gradient(rgba(20,12,40,.34), rgba(20,12,40,.56)),
+    url("arkaplan.png") center 22% / cover no-repeat,
     url("arkaplan.jpg") center 22% / cover no-repeat,
     radial-gradient(900px 600px at 8% -5%, rgba(255,138,61,.30), transparent 62%),
     radial-gradient(1000px 700px at 100% 105%, rgba(155,107,255,.34), transparent 60%),
@@ -101,6 +102,7 @@ input::placeholder{color:#8f80b0}
 .pick:disabled{opacity:.4; filter:grayscale(.7)}
 .pick small{font-weight:700; color:var(--muted)}
 .guest{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.namebox{max-width:620px}
 .guest input{flex:1 1 180px}
 
 /* Lobi */
@@ -198,20 +200,22 @@ input::placeholder{color:#8f80b0}
 .card.hint-black{background:linear-gradient(#1b1226,#050309); color:#fff; box-shadow:0 4px 0 #000, 0 10px 16px rgba(0,0,0,.45)}
 .card.hint-black::before{content:"☠"; position:absolute; top:3px; left:8px; font-size:clamp(13px,11cqw,28px); color:#fff}
 .card.endrev{opacity:.92}
-/* Açılmış kart: fotoğraf + renkli örtü */
-.card.rev{color:#fff; justify-content:flex-end}
-.card.rev .photo{position:absolute; inset:0; display:grid; place-items:center; background:#2a2236; overflow:hidden}
-.card.rev .photo b{font-family:var(--display); font-size:clamp(22px,24cqw,70px); opacity:.5}
-.card.rev .photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 20%}
-.card.rev .photo::after{content:""; position:absolute; inset:0; background:var(--ov)}
-.card.rev .foot{position:relative; z-index:2; display:grid; gap:1px; padding:4px 6px 5px; background:var(--band)}
-.card.rev .foot .w{padding:0; font-size:clamp(10px,8.5cqw,23px)}
-.card.rev .foot .by{font-size:clamp(8px,6cqw,14px); font-weight:800; opacity:.92; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.card .skull{position:absolute; top:4px; left:8px; z-index:2; font-size:clamp(14px,12cqw,32px)}
-.card.c-orange{--ov:rgba(255,138,61,.45); --band:#c4521a; box-shadow:0 4px 0 #8a3a10, 0 10px 16px rgba(0,0,0,.3)}
-.card.c-purple{--ov:rgba(155,107,255,.45); --band:#5b37c2; box-shadow:0 4px 0 #3b2085, 0 10px 16px rgba(0,0,0,.3)}
-.card.c-neutral{--ov:rgba(150,140,120,.55); --band:#6c6354; box-shadow:0 4px 0 #4a4337, 0 10px 16px rgba(0,0,0,.3)}
-.card.c-black{--ov:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.5)); --band:#000; box-shadow:0 4px 0 #000, 0 10px 16px rgba(0,0,0,.45)}
+/* Açılmış kart: fotoğraf kırpılmadan tam görünür, kelime fotoğrafın altındaki ayrı şeritte durur */
+.card.rev{color:#fff; justify-content:flex-start; padding:3px; gap:3px; background:var(--band)}
+.card.rev .photo{position:relative; flex:1 1 0; min-height:0; display:grid; place-items:center; background:#1c1428; overflow:hidden; border-radius:9px 9px 4px 4px}
+.card.rev .photo b{font-family:var(--display); font-size:clamp(20px,16cqw,56px); opacity:.45}
+.card.rev .photo img{position:absolute; display:block}
+.card.rev .photo img.bg{inset:-15%; width:130%; height:130%; object-fit:cover; filter:blur(9px) brightness(.55) saturate(1.1)}
+.card.rev .photo img.main{inset:0; width:100%; height:100%; object-fit:contain}
+.card.rev .photo::after{content:""; position:absolute; inset:0; background:var(--ov); pointer-events:none}
+.card.rev .foot{flex:none; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:6px; padding:1px 6px 2px}
+.card.rev .foot .w{padding:0; font-size:clamp(10px,7.5cqw,21px); line-height:1.15}
+.card.rev .foot .by{justify-self:end; max-width:100%; font-size:clamp(8px,5.2cqw,12px); font-weight:800; opacity:.92; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+@container (max-width:150px){ .card.rev .foot{grid-template-columns:1fr} .card.rev .foot .by, .card.rev .foot span:first-child{display:none} }
+.card.c-orange{--ov:rgba(255,138,61,.26); --band:#d9621f; box-shadow:0 4px 0 #8a3a10, 0 10px 16px rgba(0,0,0,.3)}
+.card.c-purple{--ov:rgba(155,107,255,.26); --band:#6d46d6; box-shadow:0 4px 0 #3b2085, 0 10px 16px rgba(0,0,0,.3)}
+.card.c-neutral{--ov:rgba(150,140,120,.38); --band:#7a705f; box-shadow:0 4px 0 #4a4337, 0 10px 16px rgba(0,0,0,.3)}
+.card.c-black{--ov:linear-gradient(rgba(0,0,0,.08),rgba(0,0,0,.3)); --band:#000; box-shadow:0 4px 0 #000, 0 10px 16px rgba(0,0,0,.45)}
 @media (prefers-reduced-motion:no-preference){
   .card.fresh{animation:flip .7s .12s cubic-bezier(.2,.9,.3,1.1) both}
   @keyframes flip{from{transform:perspective(700px) rotateY(88deg) scale(.92); opacity:.3}}
@@ -279,7 +283,6 @@ input::placeholder{color:#8f80b0}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getDatabase, ref, onValue, set, update, get, push, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import { KADRO } from "./kadro.js";
 import { KELIMELER } from "./kelimeler.js";
 import { TAKIMLAR, diger, karistir, tahtaKur, tahminiSonuclandir, odaKoduUret, trKucuk, trBuyuk } from "./mantik.js";
 
@@ -299,13 +302,17 @@ const db = getDatabase(app);
 
 /* ---------- Durum ---------- */
 const S = {
-  uid: null, code: null, meta: null, players: {}, spy: {}, chars: {}, game: null, key: null,
+  uid: null, code: null, meta: null, players: {}, spy: {}, game: null, key: null, nameFocused: false,
   unsubs: [], keyUnsub: null, appHTML: "", seen: null, shownWinner: false,
   showCode: false, freshAt: {}, offset: 0, connected: false, armed: false, offSince: {},
   lastClue: null, fxReady: false, fxT: null,
 };
 globalThis.__sk = { S }; // sadece hata ayıklama için
 
+// fotolar klasöründe 01.jpg, 02.jpg ... diye numaralı kart fotoğrafları. Fotoğraf sayısı değişirse sadece bu sayıyı değiştir.
+const FOTO_SAYISI = 25;
+const FOTOLAR = Array.from({ length: FOTO_SAYISI }, (_, i) => String(i + 1).padStart(2, "0"));
+const fotoYolu = (id) => `fotolar/${id}.jpg`;
 const NUMS = ["1","2","3","4","5","6","7","8","9","0","∞"];
 const SURELER = [[30,"0:30"],[45,"0:45"],[60,"1:00"],[90,"1:30"],[120,"2:00"],[180,"3:00"]];
 
@@ -334,21 +341,18 @@ function fail(e) {
 }
 
 function avatarHTML(p, cls = "") {
-  const kad = p && KADRO.find((k) => k.id === p.charId);
   const ad = (p && p.name) || "?";
   const harf = esc(trBuyuk([...ad][0] || "?"));
-  const img = kad ? `<img src="${esc(kad.foto)}" alt="" loading="lazy" onerror="this.remove()">` : "";
-  return `<span class="av ${cls}" style="--h:${hash(ad) % 360}"><b>${harf}</b>${img}</span>`;
+  return `<span class="av ${cls}" style="--h:${hash(ad) % 360}"><b>${harf}</b></span>`;
 }
 // Siyah kart bulununca açılacak özel fotoğraf. Sadece o kart açılınca yüklenir, önceden görünmez.
 const SIYAH_FOTO = "fotolar/siyah.jpg";
 // Kartın altındaki fotoğraf: kartı kim açarsa açsın, o kartın sabit yüzü gelir.
-function photoHTML(charId) {
-  if (charId === "__siyah") return `<div class="photo"><b>☠</b><img src="${SIYAH_FOTO}" alt="" onerror="this.remove()"></div>`;
-  const kad = KADRO.find((k) => k.id === charId);
-  const harf = esc(trBuyuk([...((kad && kad.ad) || "?")][0] || "?"));
-  const img = kad ? `<img src="${esc(kad.foto)}" alt="" onerror="this.remove()">` : "";
-  return `<div class="photo"><b>${harf}</b>${img}</div>`;
+function photoHTML(id) {
+  const src = id === "__siyah" ? SIYAH_FOTO : id ? fotoYolu(id) : "";
+  // Arkada bulanık bir kopya (boşlukları doldurur), önde kırpılmamış tam fotoğraf. Köşelerdeki yazılar kapanmaz.
+  const imgs = src ? `<img class="bg" src="${esc(src)}" alt="" onerror="this.remove()"><img class="main" src="${esc(src)}" alt="" onerror="this.remove()">` : "";
+  return `<div class="photo"><b>${id === "__siyah" ? "☠" : "?"}</b>${imgs}</div>`;
 }
 function membersOf(team) {
   return Object.entries(S.players)
@@ -408,25 +412,18 @@ function homeHTML() {
   </section>`;
 }
 
-function charHTML() {
-  const taken = (id) => S.chars[id] && S.chars[id] !== S.uid;
-  const grid = KADRO.map((k) => `
-    <button class="pick" data-act="pick" data-id="${esc(k.id)}" ${taken(k.id) ? "disabled" : ""}>
-      ${avatarHTML({ name: k.ad, charId: k.id }, "lg")}
-      <span>${esc(k.ad)}</span>${taken(k.id) ? "<small>Alındı</small>" : ""}
-    </button>`).join("");
+function nameHTML() {
+  const last = esc(localStorage.getItem("sk_name") || "");
   return `
-  <section class="wrap">
+  <section class="wrap namebox">
     <div class="pick-head">
-      <div><div class="brand sm">CidoTW</div><h2 style="font-size:38px">Sen kimsin?</h2></div>
+      <div><div class="brand sm">CidoTW</div><h2 style="font-size:38px">Adın ne?</h2></div>
       <div class="roomtag">${codeChip(false)}<button class="btn ghost small" data-act="leave">Çık</button></div>
     </div>
-    <p class="muted" style="margin:6px 0 0">Fotoğrafına bas. İsmin ve görselin oyunda otomatik görünür.</p>
-    <div class="pick-grid">${grid}</div>
+    <p class="muted" style="margin:6px 0 16px">Oyunda bu isimle görüneceksin.</p>
     <div class="panel guest">
-      <b>Listede yok musun?</b>
-      <input id="guestName" maxlength="16" placeholder="İsmini yaz" autocomplete="off">
-      <button class="btn violet small" data-act="guest">Misafir olarak gir</button>
+      <input id="nameIn" maxlength="16" placeholder="İsmini yaz" value="${last}" autocomplete="off">
+      <button class="btn" data-act="entername">Odaya gir</button>
     </div>
   </section>`;
 }
@@ -475,7 +472,7 @@ function lobbyHTML() {
       <div><div class="brand">CidoTW</div><h2 style="font-size:36px">Şifre Kapışması</h2></div>
       <div class="codebox">
         ${codeChip(true)}
-        <button class="btn ghost small" data-act="changechar">Karakteri değiştir</button>
+        <button class="btn ghost small" data-act="rename">İsmi değiştir</button>
         <button class="btn ghost small" data-act="leave">Çık</button>
       </div>
     </div>
@@ -555,8 +552,8 @@ function boardHTML() {
       if (!S.seen.has(i)) { S.seen.add(i); S.freshAt[i] = Date.now(); }
       const fresh = S.freshAt[i] && Date.now() - S.freshAt[i] < 1000; // animasyon bitene kadar sınıf kalsın
       return `<div class="card rev c-${esc(rev.color)}${fresh ? " fresh" : ""}" data-i="${i}">
-        ${photoHTML(rev.color === "black" ? "__siyah" : g.faces && g.faces[i])}${rev.color === "black" ? '<span class="skull">☠</span>' : ""}
-        <div class="foot"><span class="w">${esc(w)}</span><span class="by">${esc(rev.name)}</span></div></div>`;
+        ${photoHTML(rev.color === "black" ? "__siyah" : g.faces && g.faces[i])}
+        <div class="foot"><span></span><span class="w">${rev.color === "black" ? "☠ " : ""}${esc(w)}</span><span class="by">${esc(rev.name)}</span></div></div>`;
     }
     const kc = finalK ? finalK[i] : S.key ? S.key[i] : null;
     const hint = kc ? ` hint-${kc}` : "";
@@ -618,7 +615,12 @@ function route() {
   if (!S.uid) return;
   if (!S.code) return setApp(homeHTML());
   if (!S.meta) return setApp(`<div class="center-msg">Odaya bağlanılıyor…</div>`);
-  if (!me()) return setApp(charHTML());
+  if (!me()) {
+    setApp(nameHTML());
+    const ni = document.getElementById("nameIn");
+    if (ni && !S.nameFocused) { S.nameFocused = true; ni.focus(); }
+    return;
+  }
   if (S.meta.status === "playing" && S.game) { setApp(SKELETON); paintGame(); }
   else if (S.meta.status === "playing") setApp(`<div class="center-msg">Oyun yükleniyor…</div>`);
   else setApp(lobbyHTML());
@@ -634,7 +636,7 @@ function showClueFx(c) {
 }
 function closeOverlay() { $("#overlay").innerHTML = ""; }
 function showIntro() {
-  const o = (team) => { const u = S.spy[team]; return S.players[u] || { name: "Anlatıcı", charId: "guest" }; };
+  const o = (team) => { const u = S.spy[team]; return S.players[u] || { name: "Anlatıcı" }; };
   const a = o("orange"), b = o("purple");
   $("#overlay").innerHTML = `<div class="ov" data-act="closeov"><div class="intro">
     <div class="side l" style="--tc:${TAKIMLAR.orange.renk}">${avatarHTML(a, "xl")}<div class="nm">${esc(a.name)}</div><div class="tm">Belalılar</div></div>
@@ -696,7 +698,6 @@ function executorUid() {
 }
 async function removePlayerData(u, p) {
   for (const t of ["orange", "purple"]) if (S.spy[t] === u) await set(R(`spy/${t}`), null);
-  if (p && p.charId && p.charId !== "guest" && S.chars[p.charId] === u) await set(R(`chars/${p.charId}`), null);
   await set(R(`players/${u}`), null);
 }
 async function janitor() {
@@ -755,8 +756,8 @@ function unsubscribeAll() {
 }
 function localLeave() {
   unsubscribeAll();
-  S.code = null; S.meta = null; S.players = {}; S.spy = {}; S.chars = {}; S.game = null;
-  S.seen = null; S.shownWinner = false; S.showCode = false; S.armed = false; S.offSince = {};
+  S.code = null; S.meta = null; S.players = {}; S.spy = {}; S.game = null;
+  S.seen = null; S.shownWinner = false; S.showCode = false; S.nameFocused = false; S.armed = false; S.offSince = {};
   S.lastClue = null; S.fxReady = false; S.appHTML = "";
   localStorage.setItem("sk_room", "");
   closeOverlay(); $("#fx").innerHTML = ""; route();
@@ -772,7 +773,7 @@ function ensureKey() {
 }
 function subscribeRoom(code) {
   unsubscribeAll();
-  S.code = code; S.meta = null; S.players = {}; S.spy = {}; S.chars = {}; S.game = null; S.seen = null; S.shownWinner = false;
+  S.code = code; S.meta = null; S.players = {}; S.spy = {}; S.game = null; S.seen = null; S.shownWinner = false; S.nameFocused = false;
   S.armed = false; S.offSince = {}; S.lastClue = null; S.fxReady = false;
   localStorage.setItem("sk_room", code);
   const onErr = (p) => (e) => { console.warn(p, e); fail(e); };
@@ -786,7 +787,6 @@ function subscribeRoom(code) {
   });
   sub("players", (v) => { S.players = v || {}; ensurePresence(); });
   sub("spy", (v) => { S.spy = v || {}; ensureKey(); });
-  sub("chars", (v) => { S.chars = v || {}; });
   S.unsubs.push(onValue(R("game"), (s) => {
     const v = s.val();
     const cid = (v && v.clue && v.clue.id) || null;
@@ -810,10 +810,10 @@ async function maybeResolve() {
     if (p.team !== g.turn || (g.revealed && g.revealed[p.card])) { await set(R("game/pending"), null); return; }
     const renk = S.key[p.card];
     const so = tahminiSonuclandir({ takim: g.turn, renk, kalan: g.remaining });
-    const opener = S.players[p.by] || { name: "Biri", charId: "guest" };
+    const opener = S.players[p.by] || { name: "Biri" };
     const kelime = g.words[p.card];
     const up = {};
-    up[`revealed/${p.card}`] = { color: renk, by: p.by, name: opener.name, charId: opener.charId || "guest" };
+    up[`revealed/${p.card}`] = { color: renk, by: p.by, name: opener.name };
     up.remaining = so.kalan; up.pending = null;
     if (g.clue && g.clue.id) {
       up[`history/${g.clue.id}/g/${p.card}`] = { color: renk, word: kelime, by: opener.name };
@@ -899,17 +899,25 @@ async function joinRoom(raw) {
   if (!s.exists()) return toast("Bu kodda bir oda yok.");
   subscribeRoom(code);
 }
-async function pickChar(id) {
-  const k = KADRO.find((x) => x.id === id); if (!k) return;
-  try {
-    await set(R(`chars/${id}`), S.uid);
-    await set(R(`players/${S.uid}`), { name: k.ad, charId: id, team: null, joinedAt: Date.now(), online: true });
-  } catch (e) { toast("Bu karakteri başkası almış olabilir."); console.warn(e); }
+const temizIsim = (s) => String(s || "").trim().replace(/\s+/g, " ").slice(0, 16);
+function isimKullanimda(name) {
+  const low = trKucuk(name);
+  return Object.entries(S.players).some(([u, p]) => u !== S.uid && p && p.name && trKucuk(p.name) === low);
 }
-async function guestIn() {
-  const name = ($("#guestName").value || "").trim().slice(0, 16);
+async function enterName() {
+  const name = temizIsim($("#nameIn").value);
   if (!name) return toast("İsmini yaz.");
-  await set(R(`players/${S.uid}`), { name, charId: "guest", team: null, joinedAt: Date.now(), online: true });
+  if (isimKullanimda(name)) return toast("Bu isim odada kullanılıyor. Başka bir isim yaz.");
+  localStorage.setItem("sk_name", name);
+  await set(R(`players/${S.uid}`), { name, team: null, joinedAt: Date.now(), online: true });
+}
+async function rename() {
+  const m = me(); if (!m) return;
+  const name = temizIsim(prompt("Yeni ismin:", m.name));
+  if (!name || name === m.name) return;
+  if (isimKullanimda(name)) return toast("Bu isim odada kullanılıyor.");
+  localStorage.setItem("sk_name", name);
+  await set(R(`players/${S.uid}/name`), name);
 }
 async function joinTeam(team) {
   const m = me(); if (!m) return;
@@ -935,9 +943,8 @@ async function startGame() {
   const st = settings();
   const t = tahtaKur(KELIMELER);
   // Her kartın altında farklı bir kişinin fotoğrafı olur. Dağılım her oyunda karışır.
-  const ids = KADRO.map((k) => k.id);
-  const faces = karistir(ids).slice(0, 25);
-  while (ids.length && faces.length < 25) faces.push(ids[faces.length % ids.length]);
+  const faces = karistir(FOTOLAR).slice(0, 25);
+  while (faces.length < 25) faces.push(FOTOLAR[faces.length % FOTOLAR.length]);
   const timer = st.timer ? { spy: st.spySec * 1000, guess: st.guessSec * 1000 } : null;
   const lk = push(R("game/log")).key;
   await set(R("secret/key"), t.anahtar);
@@ -964,7 +971,6 @@ async function removeMe(keepRoom) {
     if (next) await set(R("meta/host"), next[0]);
   }
   for (const t of ["orange", "purple"]) if (S.spy[t] === S.uid) await set(R(`spy/${t}`), null);
-  if (m.charId && m.charId !== "guest") await set(R(`chars/${m.charId}`), null);
   await set(R(`players/${S.uid}`), null);
 }
 async function leaveRoom() {
@@ -983,14 +989,13 @@ async function act(a, d) {
     switch (a) {
       case "create": return await createRoom();
       case "join": return await joinRoom($("#codeIn").value);
-      case "pick": return await pickChar(d.id);
-      case "guest": return await guestIn();
+      case "entername": return await enterName();
       case "team": return await joinTeam(d.team);
       case "spy": return await toggleSpy(d.team);
       case "start": return await startGame();
       case "newgame": return await newGame();
       case "leave": return await leaveRoom();
-      case "changechar": return await removeMe(true);
+      case "rename": return await rename();
       case "togglecode": S.showCode = !S.showCode; return route();
       case "copylink": return await copy(`${location.origin}${location.pathname}?oda=${S.code}`, "Davet linki kopyalandı. Kod ekranda gizli kaldı.");
       case "clue": return await giveClue();
@@ -1020,7 +1025,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key !== "Enter") return;
   if (e.target.id === "clueWord") act("clue", {});
   if (e.target.id === "codeIn") act("join", {});
-  if (e.target.id === "guestName") act("guest", {});
+  if (e.target.id === "nameIn") act("entername", {});
 });
 window.addEventListener("unhandledrejection", (e) => fail(e.reason));
 

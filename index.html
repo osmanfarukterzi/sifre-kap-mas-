@@ -211,7 +211,7 @@ input::placeholder{color:#8f80b0}
 .card.c-orange{--ov:rgba(255,138,61,.45); --band:#c4521a; box-shadow:0 4px 0 #8a3a10, 0 10px 16px rgba(0,0,0,.3)}
 .card.c-purple{--ov:rgba(155,107,255,.45); --band:#5b37c2; box-shadow:0 4px 0 #3b2085, 0 10px 16px rgba(0,0,0,.3)}
 .card.c-neutral{--ov:rgba(150,140,120,.55); --band:#6c6354; box-shadow:0 4px 0 #4a4337, 0 10px 16px rgba(0,0,0,.3)}
-.card.c-black{--ov:rgba(0,0,0,.78); --band:#000; box-shadow:0 4px 0 #000, 0 10px 16px rgba(0,0,0,.45)}
+.card.c-black{--ov:linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.5)); --band:#000; box-shadow:0 4px 0 #000, 0 10px 16px rgba(0,0,0,.45)}
 @media (prefers-reduced-motion:no-preference){
   .card.fresh{animation:flip .7s .12s cubic-bezier(.2,.9,.3,1.1) both}
   @keyframes flip{from{transform:perspective(700px) rotateY(88deg) scale(.92); opacity:.3}}
@@ -340,8 +340,11 @@ function avatarHTML(p, cls = "") {
   const img = kad ? `<img src="${esc(kad.foto)}" alt="" loading="lazy" onerror="this.remove()">` : "";
   return `<span class="av ${cls}" style="--h:${hash(ad) % 360}"><b>${harf}</b>${img}</span>`;
 }
+// Siyah kart bulununca açılacak özel fotoğraf. Sadece o kart açılınca yüklenir, önceden görünmez.
+const SIYAH_FOTO = "fotolar/siyah.jpg";
 // Kartın altındaki fotoğraf: kartı kim açarsa açsın, o kartın sabit yüzü gelir.
 function photoHTML(charId) {
+  if (charId === "__siyah") return `<div class="photo"><b>☠</b><img src="${SIYAH_FOTO}" alt="" onerror="this.remove()"></div>`;
   const kad = KADRO.find((k) => k.id === charId);
   const harf = esc(trBuyuk([...((kad && kad.ad) || "?")][0] || "?"));
   const img = kad ? `<img src="${esc(kad.foto)}" alt="" onerror="this.remove()">` : "";
@@ -552,7 +555,7 @@ function boardHTML() {
       if (!S.seen.has(i)) { S.seen.add(i); S.freshAt[i] = Date.now(); }
       const fresh = S.freshAt[i] && Date.now() - S.freshAt[i] < 1000; // animasyon bitene kadar sınıf kalsın
       return `<div class="card rev c-${esc(rev.color)}${fresh ? " fresh" : ""}" data-i="${i}">
-        ${photoHTML(g.faces && g.faces[i])}${rev.color === "black" ? '<span class="skull">☠</span>' : ""}
+        ${photoHTML(rev.color === "black" ? "__siyah" : g.faces && g.faces[i])}${rev.color === "black" ? '<span class="skull">☠</span>' : ""}
         <div class="foot"><span class="w">${esc(w)}</span><span class="by">${esc(rev.name)}</span></div></div>`;
     }
     const kc = finalK ? finalK[i] : S.key ? S.key[i] : null;

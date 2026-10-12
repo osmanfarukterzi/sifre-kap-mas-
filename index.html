@@ -24,14 +24,14 @@ html,body{margin:0;min-height:100%}
 body{
   font-family:var(--body); color:var(--text); font-size:16px; line-height:1.4;
   background:
+    linear-gradient(rgba(20,12,40,.34), rgba(20,12,40,.56)),
+    url("arkaplan.jpg") center 22% / cover no-repeat,
     radial-gradient(900px 600px at 8% -5%, rgba(255,138,61,.30), transparent 62%),
     radial-gradient(1000px 700px at 100% 105%, rgba(155,107,255,.34), transparent 60%),
     var(--bg);
   background-attachment:fixed;
 }
-#bg{position:fixed; inset:0; pointer-events:none; z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170' fill='none' stroke='white' stroke-opacity='.07' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='30' cy='30' r='12'/%3E%3Cpath d='M39 39l12 12'/%3E%3Ccircle cx='118' cy='38' r='8'/%3E%3Cpath d='M126 38h30M148 38v9M140 38v6'/%3E%3Ccircle cx='48' cy='122' r='15'/%3E%3Cpath d='M48 100v44M26 122h44'/%3E%3Crect x='104' y='108' width='48' height='24' rx='7'/%3E%3Cpath d='M114 120h28'/%3E%3C/svg%3E");
-  background-size:170px 170px;}
+#bg{display:none}
 #app{position:relative; z-index:1; min-height:100vh}
 button{font:inherit; color:inherit; cursor:pointer}
 button:disabled{cursor:not-allowed; opacity:.5}
@@ -43,7 +43,7 @@ h1,h2,h3{font-family:var(--display); margin:0; line-height:1.05}
   background:linear-gradient(90deg,var(--ember),#ffb86b 45%,var(--violet)); -webkit-background-clip:text; background-clip:text; color:transparent}
 .brand.sm{font-size:18px}
 
-.panel{background:rgba(255,255,255,.065); border:1px solid var(--line); border-radius:18px; padding:14px; backdrop-filter:blur(6px)}
+.panel{background:rgba(20,12,40,.6); border:1px solid var(--line); border-radius:18px; padding:14px; backdrop-filter:blur(4px)}
 .btn{border:0; border-radius:999px; padding:10px 20px; font-weight:800; color:#2a1405;
   background:linear-gradient(180deg,#ffa35e,var(--ember)); box-shadow:0 4px 0 var(--ember-d), 0 10px 18px rgba(0,0,0,.25);
   transition:transform .08s, box-shadow .08s}
@@ -132,12 +132,12 @@ input::placeholder{color:#8f80b0}
 .sw.on i{transform:translateX(22px); background:#fff}
 
 /* Oyun ekranı: tek ekrana sığar */
-.game{display:grid; grid-template-columns:minmax(210px,250px) minmax(0,780px) minmax(210px,250px); justify-content:center; grid-template-rows:auto minmax(0,1fr); grid-template-areas:"top top top" "left center right"; gap:10px; padding:10px 12px; height:100vh; height:100dvh; margin:0 auto}
+.game{display:grid; grid-template-columns:minmax(210px,250px) minmax(0,1fr) minmax(210px,250px); grid-template-rows:auto minmax(0,1fr); grid-template-areas:"top top top" "left center right"; gap:10px; padding:10px 12px; height:100vh; height:100dvh; margin:0 auto}
 .g-top{grid-area:top; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding:7px 14px; border-radius:16px}
 #g-left{grid-area:left; display:grid; gap:10px; align-content:start; overflow:auto; min-height:0}
 #g-right{grid-area:right; display:grid; gap:10px; align-content:start; overflow:auto; min-height:0}
 .center{grid-area:center; min-width:0; min-height:0; display:grid; place-items:center}
-.stage{width:min(100%, calc((100vh - var(--chrome)) * .82)); width:min(100%, calc((100dvh - var(--chrome)) * .82)); display:grid; gap:10px}
+.stage{width:min(100%, calc((100vh - var(--chrome)) * 1.7)); width:min(100%, calc((100dvh - var(--chrome)) * 1.7)); display:grid; gap:10px}
 @media(max-width:1020px){
   .game{grid-template-columns:1fr; justify-content:stretch; grid-template-rows:none; grid-template-areas:"top" "center" "left" "right"; height:auto; padding-bottom:30px}
   .stage{width:100%} #g-left,#g-right{overflow:visible}
@@ -178,11 +178,11 @@ input::placeholder{color:#8f80b0}
 .logp li::before{content:""; position:absolute; left:0; top:.5em; width:7px; height:7px; border-radius:50%; background:var(--lc,#888)}
 .logp li.lo{--lc:var(--ember)} .logp li.lp{--lc:var(--violet)} .logp li.ln{--lc:#b9ae9b} .logp li.lb{--lc:#fff}
 
-/* Tahta ve kartlar: ince uzun, ekrana sığar */
-.board{width:100%; aspect-ratio:.82/1; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); grid-template-rows:repeat(5,minmax(0,1fr)); gap:clamp(4px,.8vw,10px)}
+/* Tahta ve kartlar: yatay dikdörtgen, ekrana sığar */
+.board{width:100%; aspect-ratio:1.7/1; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); grid-template-rows:repeat(5,minmax(0,1fr)); gap:clamp(4px,.8vw,10px)}
 .card{container-type:inline-size; position:relative; min-height:0; border-radius:12px; display:flex; flex-direction:column; justify-content:center; overflow:hidden; user-select:none;
   background:linear-gradient(#f6edda,#e8dabf); color:var(--ink); box-shadow:0 4px 0 var(--paper-d), 0 10px 16px rgba(0,0,0,.3)}
-.card .w{font-family:var(--display); font-weight:800; text-transform:uppercase; text-align:center; font-size:clamp(9px,11cqw,19px); line-height:1.1; padding:4px; overflow-wrap:anywhere}
+.card .w{font-family:var(--display); font-weight:800; text-transform:uppercase; text-align:center; font-size:clamp(10px,10.5cqw,27px); line-height:1.1; padding:4px; overflow-wrap:anywhere}
 .card.can{cursor:pointer}
 .card.can:hover{transform:translateY(-2px)}
 .card.mine{transform:translateY(-4px); box-shadow:0 4px 0 var(--paper-d), 0 0 0 3px #fff, 0 12px 20px rgba(0,0,0,.35)}
@@ -196,18 +196,18 @@ input::placeholder{color:#8f80b0}
 .card.hint-orange{background:linear-gradient(rgba(255,138,61,.86),rgba(255,138,61,.86)),linear-gradient(#f6edda,#e8dabf); box-shadow:0 4px 0 #8a3a10, 0 10px 16px rgba(0,0,0,.3); color:#2a1204}
 .card.hint-purple{background:linear-gradient(rgba(155,107,255,.86),rgba(155,107,255,.86)),linear-gradient(#f6edda,#e8dabf); box-shadow:0 4px 0 #3b2085, 0 10px 16px rgba(0,0,0,.3); color:#190a40}
 .card.hint-black{background:linear-gradient(#1b1226,#050309); color:#fff; box-shadow:0 4px 0 #000, 0 10px 16px rgba(0,0,0,.45)}
-.card.hint-black::before{content:"☠"; position:absolute; top:3px; left:7px; font-size:clamp(13px,17cqw,26px); color:#fff}
+.card.hint-black::before{content:"☠"; position:absolute; top:3px; left:8px; font-size:clamp(13px,11cqw,28px); color:#fff}
 .card.endrev{opacity:.92}
 /* Açılmış kart: fotoğraf + renkli örtü */
 .card.rev{color:#fff; justify-content:flex-end}
 .card.rev .photo{position:absolute; inset:0; display:grid; place-items:center; background:#2a2236; overflow:hidden}
-.card.rev .photo b{font-family:var(--display); font-size:clamp(22px,40cqw,60px); opacity:.5}
+.card.rev .photo b{font-family:var(--display); font-size:clamp(22px,24cqw,70px); opacity:.5}
 .card.rev .photo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 20%}
 .card.rev .photo::after{content:""; position:absolute; inset:0; background:var(--ov)}
 .card.rev .foot{position:relative; z-index:2; display:grid; gap:1px; padding:4px 6px 5px; background:var(--band)}
-.card.rev .foot .w{padding:0; font-size:clamp(9px,10.5cqw,17px)}
-.card.rev .foot .by{font-size:clamp(8px,8cqw,12px); font-weight:800; opacity:.92; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.card .skull{position:absolute; top:4px; left:8px; z-index:2; font-size:clamp(14px,20cqw,30px)}
+.card.rev .foot .w{padding:0; font-size:clamp(10px,8.5cqw,23px)}
+.card.rev .foot .by{font-size:clamp(8px,6cqw,14px); font-weight:800; opacity:.92; text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.card .skull{position:absolute; top:4px; left:8px; z-index:2; font-size:clamp(14px,12cqw,32px)}
 .card.c-orange{--ov:rgba(255,138,61,.45); --band:#c4521a; box-shadow:0 4px 0 #8a3a10, 0 10px 16px rgba(0,0,0,.3)}
 .card.c-purple{--ov:rgba(155,107,255,.45); --band:#5b37c2; box-shadow:0 4px 0 #3b2085, 0 10px 16px rgba(0,0,0,.3)}
 .card.c-neutral{--ov:rgba(150,140,120,.55); --band:#6c6354; box-shadow:0 4px 0 #4a4337, 0 10px 16px rgba(0,0,0,.3)}
@@ -216,6 +216,8 @@ input::placeholder{color:#8f80b0}
   .card.fresh{animation:flip .7s .12s cubic-bezier(.2,.9,.3,1.1) both}
   @keyframes flip{from{transform:perspective(700px) rotateY(88deg) scale(.92); opacity:.3}}
 }
+
+@media(max-width:700px){ .board{aspect-ratio:.8/1} .card .w{font-size:clamp(9px,12.5cqw,20px)} .card.rev .foot .w{font-size:clamp(9px,11cqw,17px)} }
 
 /* İpucu çubuğu */
 .cluebar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 12px; border-radius:16px}
